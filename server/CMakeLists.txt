@@ -3,4 +3,4 @@ project(server)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(server main.cpp ${COMMON_SOURCE})
+add_executable(server main.cpp chat_logic.cpp client_session.cpp server.cpp ${COMMON_SOURCE})

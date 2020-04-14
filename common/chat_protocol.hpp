@@ -1,11 +1,15 @@
 #ifndef SIMPLE_CHAT_CHAT_PROTOCOL_HPP
 #define SIMPLE_CHAT_CHAT_PROTOCOL_HPP
 
+#include <cstddef>
 #include <cstdint>
 
 namespace simple_chat {
 
-enum { MAX_MSG_LEN = 1024 };
+enum { MAX_MSG_LEN = 1024, MAX_COMPANIONS = 5 };
+typedef struct {
+  char _[MAX_MSG_LEN];
+} AnyMessage;
 
 enum struct MessageType : uint32_t {
   LOGIN, MESSAGE, GET_HISTORY
@@ -17,9 +21,23 @@ struct MessageHeader {
 };
 
 struct MessageLogin {
-  MessageHeader header_;
+  MessageHeader header_{};
 
-  static MessageLogin* Create();
+  MessageLogin();
+};
+
+struct MessageWritten {
+  MessageHeader header_;
+  char written[512] = {};
+
+  MessageWritten();
+};
+
+struct MessageGetHistory {
+  MessageHeader header_;
+  int requested_id{};  // если = -1, значит означает id себя
+
+  MessageGetHistory();
 };
 
 }  // namespace simple_chat
